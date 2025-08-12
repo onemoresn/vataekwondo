@@ -13,14 +13,51 @@
             font-family: 'Inter', sans-serif;
             background-color: #f7f7f9;
         }
+
+        /* --- Parallax Background Styling --- */
+        /*
+        The background-attachment: fixed property is key to the parallax effect.
+        It keeps the background image in a fixed position relative to the viewport,
+        while the rest of the page content scrolls over it.
+        */
+        .parallax-bg-1 {
+            background-image: url('/TaekwondSchools&EventsVA/bg1.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed; /* This enables the parallax effect */
+        }
+        
+        .parallax-bg-2 {
+            background-image: url('/TaekwondSchools&EventsVA/bg2.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed; /* This enables the parallax effect */
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
+    <!-- Parallax Background Layer 1 -->
+    <!-- This div will contain the first background image and is positioned behind all content -->
+    <div class="fixed top-0 left-0 w-full h-full parallax-bg-1 -z-10"></div>
+    
+    <!-- Parallax Background Layer 2 -->
+    <!-- This div will contain the second background image and is initially hidden. -->
+    <!-- Its purpose is to be positioned further down the page to create a second parallax section. -->
+    <div class="fixed top-0 left-0 w-full h-full parallax-bg-2 -z-20 hidden md:block"></div>
+
+
     <!-- Header and Navigation -->
     <header class="bg-gradient-to-r from-red-600 to-black text-white shadow-xl py-6 md:py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-            <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2 md:mb-0">VA Taekwondo Hub</h1>
+            <!-- Logo and Title container -->
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <!-- Image tag for the logo. The 'rounded-full' class makes it a circle. -->
+                <img id="logo-image" src="tkLogo2.png" alt="Virginia Taekwondo Hub Logo" class="h-16 w-auto rounded-full" />
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tight">VA Taekwondo Hub</h1>
+            </div>
             <nav class="mt-4 md:mt-0">
                 <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg font-semibold">
                     <li><a href="#schools-section" class="hover:text-red-300 transition-colors duration-300">VA Schools</a></li>
@@ -33,7 +70,8 @@
     <main class="container mx-auto px-4 py-8 md:py-12">
 
         <!-- Virginia Schools Section -->
-        <section id="schools-section" class="mb-12">
+        <!-- Added a transparent white background to ensure readability over the parallax image -->
+        <section id="schools-section" class="mb-12 p-8 rounded-xl shadow-lg bg-white bg-opacity-90">
             <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 tracking-wide">Taekwondo Schools in Virginia</h2>
             
             <!-- Filter by County -->
@@ -52,7 +90,8 @@
         </section>
 
         <!-- USA Events Section -->
-        <section id="events-section" class="mb-12">
+        <!-- Added a transparent white background to ensure readability over the parallax image -->
+        <section id="events-section" class="mb-12 p-8 rounded-xl shadow-lg bg-white bg-opacity-90">
             <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 tracking-wide">Upcoming USA Taekwondo Events</h2>
             
             <!-- Filter by State and Date -->
@@ -375,7 +414,7 @@
         const eventListDiv = document.getElementById('event-list');
         const stateFilterSelect = document.getElementById('state-filter');
         const dateSortSelect = document.getElementById('sort-by-date');
-
+        
         // --- Helper Functions ---
 
         /**
@@ -482,7 +521,7 @@
                 stateFilterSelect.appendChild(option);
             });
         }
-
+        
         // --- Event Listeners ---
 
         // Listen for changes on the county filter dropdown
