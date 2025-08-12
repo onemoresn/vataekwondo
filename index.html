@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virginia Taekwondo Hub</title>
+    <!-- Use the Inter font for a clean, modern look -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <!-- Tailwind CSS CDN for easy, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f9;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header and Navigation -->
+    <header class="bg-gradient-to-r from-red-600 to-black text-white shadow-xl py-6 md:py-8">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2 md:mb-0">VA Taekwondo Hub</h1>
+            <nav class="mt-4 md:mt-0">
+                <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg font-semibold">
+                    <li><a href="#schools-section" class="hover:text-red-300 transition-colors duration-300">VA Schools</a></li>
+                    <li><a href="#events-section" class="hover:text-red-300 transition-colors duration-300">USA Events</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <!-- Virginia Schools Section -->
+        <section id="schools-section" class="mb-12">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 tracking-wide">Taekwondo Schools in Virginia</h2>
+            
+            <!-- Filter by County -->
+            <div class="flex flex-col md:flex-row items-center justify-between mb-8 p-4 bg-white rounded-xl shadow-lg">
+                <label for="county-filter" class="font-semibold text-lg text-gray-700 mb-2 md:mb-0">Filter by County/City:</label>
+                <select id="county-filter" class="w-full md:w-64 p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 bg-white shadow-sm">
+                    <option value="all">All Counties</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+
+            <!-- School List -->
+            <div id="school-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- School cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- USA Events Section -->
+        <section id="events-section" class="mb-12">
+            <h2 class="text-4xl font-extrabold text-center text-gray-900 mb-8 tracking-wide">Upcoming USA Taekwondo Events</h2>
+            
+            <!-- Filter by State and Date -->
+            <div class="flex flex-col md:flex-row items-center justify-between mb-8 p-4 bg-white rounded-xl shadow-lg">
+                <div class="flex-grow flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
+                    <div class="flex-grow w-full">
+                        <label for="state-filter" class="block font-semibold text-lg text-gray-700 mb-1">Filter by State:</label>
+                        <select id="state-filter" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 bg-white shadow-sm">
+                            <option value="all">All States</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="flex-grow w-full">
+                        <label for="sort-by-date" class="block font-semibold text-lg text-gray-700 mb-1">Sort by Date:</label>
+                        <select id="sort-by-date" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 bg-white shadow-sm">
+                            <option value="ascending">Upcoming First</option>
+                            <option value="descending">Most Recent First</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event List -->
+            <div id="event-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Event cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-6">
+        <p class="text-sm">© 2025 VA Taekwondo Hub. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- Data Definitions ---
+
+        // Mock data for Taekwondo schools in Virginia
+        const taekwondoSchools = [
+            {
+                name: "Yang's Taekwondo Academy",
+                county: "Alexandria City",
+                address: "123 Main Street, Alexandria, VA 22301",
+                phone: "(703) 519-5797",
+                hours: "Mon-Fri: 4:00 PM - 8:30 PM",
+                website: "https://yangstaekwondo.com/",
+                description: "Offers classes for all ages with a focus on real-world self-defense. No contracts, family-friendly atmosphere."
+            },
+            {
+                name: "Highkicks Taekwondo",
+                county: "Fairfax County",
+                address: "14155-F Sullyfield Circle, Chantilly, VA 20151",
+                phone: "(703) 378-1000",
+                hours: "Mon-Fri: 3:00 PM - 8:00 PM",
+                website: "https://highkicks.org/",
+                description: "Serving Northern Virginia since 1996, dedicated to making the martial arts experience enjoyable and satisfying."
+            },
+            {
+                name: "Jhoon Rhee American Taekwondo",
+                county: "Falls Church City",
+                address: "123 Park Avenue, Falls Church, VA 22046",
+                phone: "(703) 534-1800",
+                hours: "Mon-Thu: 4:00 PM - 9:00 PM, Sat: 9:00 AM - 1:00 PM",
+                website: "https://jhoonrheetkd.com/",
+                description: "One of the most recognized and respected martial arts systems in the world, with over 59 years of experience in the DC area."
+            },
+            {
+                name: "Mountain Kim Martial Arts",
+                county: "Prince William County",
+                address: "1271 Braemar Village Plaza, Bristow, VA 20136",
+                phone: "(703) 331-5588",
+                hours: "Mon-Fri: 4:00 PM - 8:30 PM",
+                website: "https://mtkim.com/",
+                description: "Multiple locations with programs for Tiny Tigers, Kids, Teens & Adults. Focus on positive mental attitude and discipline."
+            },
+            {
+                name: "Virginia Taekwondo Academy",
+                county: "Chesapeake City",
+                address: "1245 Cedar Road, Suite B1, Chesapeake, VA 23322",
+                phone: "(757) 558-9869",
+                hours: "Mon-Thu: 4:00 PM - 8:00 PM, Sat: 9:00 AM - 12:00 PM",
+                website: "https://virginiatkd.com/",
+                description: "Specializes in Kids and Teen & Adult Taekwondo, also offering Brazilian Jiu-Jitsu. Serving the Chesapeake area."
+            },
+            {
+                name: "M.Y. Taekwondo & After School",
+                county: "Henrico County",
+                address: "1000 After School Rd, Richmond, VA 23233",
+                phone: "(804) 555-1234",
+                hours: "Mon-Fri: 3:00 PM - 7:00 PM",
+                website: "http://www.my-taekwondo.com/",
+                description: "Offers a combination of Taekwondo training and an after-school program for children. Great community atmosphere."
+            },
+            {
+                name: "Chung's Taekwondo",
+                county: "Spotsylvania County",
+                address: "5725 Plank Rd, Fredericksburg, VA 22407",
+                phone: "(540) 555-5678",
+                hours: "Mon-Fri: 4:30 PM - 8:00 PM",
+                website: "http://www.chungstkd.com/",
+                description: "A Fredericksburg institution focused on discipline, respect, and traditional Taekwondo values for all ages."
+            },
+            {
+                name: "Master Y.J. Kim's Martial Arts Center",
+                county: "Spotsylvania County",
+                address: "9739 Patriot Hwy, Fredericksburg, VA 22407",
+                phone: "(540) 710-7727",
+                hours: "Mon-Fri: 10:00 AM - 9:00 PM, Sat: 9:00 AM - 1:30 PM",
+                website: "https://www.gomasterkim.com/",
+                description: "A premier martial arts center in Spotsylvania County, focusing on confidence, discipline, and respect for all ages."
+            }
+        ];
+
+        // Mock data for upcoming USA events
+        const taekwondoEvents = [
+            {
+                name: "2025 World Taekwondo Grand Prix Challenge",
+                state: "North Carolina",
+                city: "Charlotte",
+                date: "June 13-15, 2025",
+                rawDate: new Date('2025-06-13'),
+                description: "Charlotte is the first U.S. city in over 30 years to host this international martial arts championship.",
+                registration: "https://www.usperformancecenter.com/2025-world-taekwondo-grand-prix-challenge/"
+            },
+            {
+                name: "2025 AAU U.S. National Taekwondo Championships",
+                state: "Utah",
+                city: "Salt Lake City",
+                date: "June 29 - July 5, 2025",
+                rawDate: new Date('2025-06-29'),
+                description: "AAU Taekwondo's premier national event, bringing together top athletes from across the country.",
+                registration: "https://aausports.org/taekwondo/2025-nationals"
+            },
+            {
+                name: "2025 USA Taekwondo National Championships",
+                state: "California",
+                city: "Ontario",
+                date: "July 23-25, 2025",
+                rawDate: new Date('2025-07-23'),
+                description: "The official national championships for USA Taekwondo. This event is a qualifier for athletes with intellectual impairments.",
+                registration: "https://www.usatkd.org/2025-u-s-taekwondo-national-championships"
+            },
+            {
+                name: "U.S. Season Final & Sport Festival",
+                state: "Florida",
+                city: "Daytona Beach",
+                date: "September 5-7, 2025",
+                rawDate: new Date('2025-09-05'),
+                description: "A major event hosted by USA Taekwondo, featuring competition and a sports festival.",
+                registration: "https://www.usatkd.org/calendar"
+            },
+            {
+                name: "2025 AAU Junior Olympic Games",
+                state: "Texas",
+                city: "Houston",
+                date: "July 23 - Aug 2, 2025",
+                rawDate: new Date('2025-07-23'),
+                description: "Part of the multi-sport AAU Junior Olympic Games, this event highlights young talent in Taekwondo.",
+                registration: "https://aausports.org/taekwondo/2024-25-season-licensed-events"
+            },
+            {
+                name: "Virginia State Taekwondo Championship",
+                state: "Virginia",
+                city: "Leesburg",
+                date: "March 29, 2025",
+                rawDate: new Date('2025-03-29'),
+                description: "An official qualifier event for the USA Taekwondo National Championships, held in Northern Virginia.",
+                registration: "https://www.dragonyong-in.com/event-details/virginia-state-taekwondo-championship"
+            },
+            {
+                name: "Mountain Kim Martial Arts Tournament",
+                state: "Virginia",
+                city: "Annandale",
+                date: "March 8, 2025",
+                rawDate: new Date('2025-03-08'),
+                description: "A martial arts tournament for all ages, hosted at NOVA Community College.",
+                registration: "https://mtkim.com/programs/tournament-main"
+            },
+            {
+                name: "International Taekwondo Festival",
+                state: "California",
+                city: "City of Industry",
+                date: "May 17, 2025",
+                rawDate: new Date('2025-05-17'),
+                description: "A long-running, world-class event bringing in competitors from across the U.S. and around the globe.",
+                registration: "https://www.tkdfest.com/"
+            },
+            {
+                name: "2025 ATF National Championship Finals",
+                state: "Alabama",
+                city: "Millbrook",
+                date: "July 12, 2025",
+                rawDate: new Date('2025-07-12'),
+                description: "The American Taekwondo Foundation's national championship event.",
+                registration: "https://atf-tkd.com/atf_tournaments.htm"
+            },
+            {
+                name: "2025 America's Cup Martial Arts Open Championship",
+                state: "Colorado",
+                city: "Denver",
+                date: "September 13, 2025",
+                rawDate: new Date('2025-09-13'),
+                description: "An open martial arts championship tournament for all styles.",
+                registration: "https://www.kihapp.com/"
+            },
+            {
+                name: "ATA Texas Twister",
+                state: "Texas",
+                city: "Allen",
+                date: "August 15-16, 2025",
+                rawDate: new Date('2025-08-15'),
+                description: "A major regional tournament hosted by the American Taekwondo Association (ATA).",
+                registration: "https://www.ataezsignup.com/"
+            },
+            {
+                name: "ATA Fall Nationals",
+                state: "Pennsylvania",
+                city: "Pittsburgh",
+                date: "October 24-25, 2025",
+                rawDate: new Date('2025-10-24'),
+                description: "One of the largest national events on the ATA Martial Arts circuit.",
+                registration: "https://atamartialarts.com/events/fall-nationals/"
+            },
+            {
+                name: "ATA Warrior Legacy Championships",
+                state: "New Jersey",
+                city: "Hillsborough Township",
+                date: "August 16, 2025",
+                rawDate: new Date('2025-08-16'),
+                description: "A regional tournament hosted by ATA, bringing together competitors from the tri-state area.",
+                registration: "https://www.ataezsignup.com/"
+            },
+            {
+                name: "ATA St. Louis Championships",
+                state: "Missouri",
+                city: "Fenton",
+                date: "September 5-6, 2025",
+                rawDate: new Date('2025-09-05'),
+                description: "A regional Class A tournament in the St. Louis area for ATA competitors.",
+                registration: "https://www.ataezsignup.com/"
+            },
+            {
+                name: "2025 AAU Taekwondo SC State Championships",
+                state: "South Carolina",
+                city: "Camden",
+                date: "May 3, 2025",
+                rawDate: new Date('2025-05-03'),
+                description: "The official state-level AAU championships for Taekwondo in South Carolina.",
+                registration: "https://www.scaau.org/taekwondo"
+            },
+            {
+                name: "2025 ATU National Taekwondo Championship",
+                state: "Georgia",
+                city: "Duluth",
+                date: "May 23-24, 2025",
+                rawDate: new Date('2025-05-23'),
+                description: "The American Taekwondo United's national championship, held at the Gas South Convention Center.",
+                registration: "https://www.gassouthdistrict.com/events/detail/2025-atu-national-taekwondo-championship"
+            },
+            {
+                name: "2025 USAT Pennsylvania State Championship",
+                state: "Pennsylvania",
+                city: "Downingtown",
+                date: "April 12, 2025",
+                rawDate: new Date('2025-04-12'),
+                description: "The official USA Taekwondo state championship, open to all USAT athletes.",
+                registration: "https://www.patkd.org/"
+            },
+            {
+                name: "2025 USAT New Jersey State Championships",
+                state: "New Jersey",
+                city: "Newark",
+                date: "March 8-9, 2025",
+                rawDate: new Date('2025-03-08'),
+                description: "The official USA Taekwondo state championship for athletes in New Jersey.",
+                registration: "https://www.njstatetkd.com/"
+            },
+            {
+                name: "The 2025 US Masters Invitational",
+                state: "New Jersey",
+                city: "Caldwell",
+                date: "November 1, 2025",
+                rawDate: new Date('2025-11-01'),
+                description: "A major tournament hosted by Glen Ridge Taekwon-do for various age divisions.",
+                registration: "https://www.glenridgetkd.com/registration.html"
+            },
+            {
+                name: "Kukkiwon Cup Taekwondo Tournament",
+                state: "Virginia",
+                city: "Leesburg",
+                date: "September 14, 2025",
+                rawDate: new Date('2025-09-14'),
+                description: "A thrilling display of skill, discipline, and sportsmanship for all ages, hosted by Kukkiwon VA-DC.",
+                registration: "https://www.kukkiwonva-dc.com/event-details/kukkiwon-cup-taekwondo-tournament-hanmaum-championship"
+            },
+            {
+                name: "Virginia Governor's Cup Taekwondo Championship",
+                state: "Virginia",
+                city: "Purcellville", 
+                date: "September 20, 2025",
+                rawDate: new Date('2025-09-20'),
+                description: "The annual Virginia Governor's Cup tournament, bringing together top competitors from across the state.",
+                registration: "https://gomasterkim.com/14th-annual-virginia-governors-cup/"
+            },
+            {
+                name: "USA Grand Prix Finals East Region",
+                state: "Florida",
+                city: "Orlando",
+                date: "February 22, 2025",
+                rawDate: new Date('2025-02-22'),
+                description: "The regional finals for the USA Grand Prix series, held at the Orange County Convention Center.",
+                registration: "https://www.usatkd.org/events/usa-grand-prix-finals-east-region"
+            }
+        ];
+        
+        // --- Document Object Model (DOM) Element References ---
+        const schoolListDiv = document.getElementById('school-list');
+        const countyFilterSelect = document.getElementById('county-filter');
+        const eventListDiv = document.getElementById('event-list');
+        const stateFilterSelect = document.getElementById('state-filter');
+        const dateSortSelect = document.getElementById('sort-by-date');
+
+        // --- Helper Functions ---
+
+        /**
+         * Creates an HTML string for a school card.
+         * @param {Object} school - The school data object.
+         * @returns {string} The HTML string for the school card.
+         */
+        function createSchoolCard(school) {
+            return `
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-bold text-red-600 mb-2">${school.name}</h3>
+                    <p class="text-gray-600 font-semibold mb-2">${school.county}</p>
+                    <p class="text-gray-700 mb-1"><strong class="font-semibold">Address:</strong> ${school.address}</p>
+                    <p class="text-gray-700 mb-1"><strong class="font-semibold">Phone:</strong> ${school.phone}</p>
+                    <p class="text-gray-700 mb-1"><strong class="font-semibold">Hours:</strong> ${school.hours}</p>
+                    <p class="text-gray-700 text-sm mt-2 flex-grow">${school.description}</p>
+                    <a href="${school.website}" target="_blank" class="mt-4 inline-block bg-red-600 text-white text-center font-bold py-2 px-4 rounded-lg shadow-md hover:bg-red-700 transition-colors duration-300">
+                        Visit Website
+                    </a>
+                </div>
+            `;
+        }
+        
+        /**
+         * Creates an HTML string for an event card.
+         * @param {Object} event - The event data object.
+         * @returns {string} The HTML string for the event card.
+         */
+        function createEventCard(event) {
+            return `
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-bold text-red-600 mb-2">${event.name}</h3>
+                    <p class="text-gray-600 font-semibold mb-2">${event.city}, ${event.state}</p>
+                    <p class="text-gray-700 mb-1"><strong class="font-semibold">Date:</strong> ${event.date}</p>
+                    <p class="text-gray-700 text-sm mt-2 flex-grow">${event.description}</p>
+                    <a href="${event.registration}" target="_blank" class="mt-4 inline-block bg-black text-white text-center font-bold py-2 px-4 rounded-lg shadow-md hover:bg-gray-700 transition-colors duration-300">
+                        Registration Details
+                    </a>
+                </div>
+            `;
+        }
+
+        /**
+         * Renders the list of schools based on the selected filter.
+         */
+        function renderSchools() {
+            const selectedCounty = countyFilterSelect.value;
+            const filteredSchools = taekwondoSchools.filter(school => {
+                if (selectedCounty === 'all') {
+                    return true;
+                }
+                return school.county === selectedCounty;
+            });
+            
+            schoolListDiv.innerHTML = filteredSchools.map(createSchoolCard).join('');
+        }
+
+        /**
+         * Renders the list of events based on the selected filter and sort order.
+         */
+        function renderEvents() {
+            const selectedState = stateFilterSelect.value;
+            const sortOrder = dateSortSelect.value;
+
+            // Filter events by state
+            let filteredEvents = taekwondoEvents.filter(event => {
+                if (selectedState === 'all') {
+                    return true;
+                }
+                return event.state === selectedState;
+            });
+            
+            // Sort events by date
+            filteredEvents.sort((a, b) => {
+                if (sortOrder === 'ascending') {
+                    return a.rawDate - b.rawDate;
+                } else {
+                    return b.rawDate - a.rawDate;
+                }
+            });
+
+            eventListDiv.innerHTML = filteredEvents.map(createEventCard).join('');
+        }
+
+        /**
+         * Populates the filter dropdowns with unique counties and states from the data.
+         */
+        function populateFilters() {
+            // Populate county filter
+            const counties = [...new Set(taekwondoSchools.map(school => school.county))].sort();
+            counties.forEach(county => {
+                const option = document.createElement('option');
+                option.value = county;
+                option.textContent = county;
+                countyFilterSelect.appendChild(option);
+            });
+
+            // Populate state filter
+            const states = [...new Set(taekwondoEvents.map(event => event.state))].sort();
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateFilterSelect.appendChild(option);
+            });
+        }
+
+        // --- Event Listeners ---
+
+        // Listen for changes on the county filter dropdown
+        countyFilterSelect.addEventListener('change', renderSchools);
+
+        // Listen for changes on the state filter and date sort dropdowns
+        stateFilterSelect.addEventListener('change', renderEvents);
+        dateSortSelect.addEventListener('change', renderEvents);
+
+        // --- Initial Load ---
+
+        // Run functions to populate filters and render initial lists when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            populateFilters();
+            renderSchools();
+            renderEvents();
+        });
+    </script>
+</body>
+</html>
