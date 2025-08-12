@@ -20,12 +20,7 @@
     <!-- Header and Navigation -->
     <header class="bg-gradient-to-r from-red-600 to-black text-white shadow-xl py-6 md:py-8">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-            <!-- Logo and Title container -->
-            <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                <!-- Image tag for the logo. The src will be populated by JavaScript. -->
-                <img id="logo-image" src="" alt="Virginia Taekwondo Hub Logo" class="h-16 w-auto rounded-full animate-pulse" />
-                <h1 class="text-3xl md:text-4xl font-bold tracking-tight">VA Taekwondo Hub</h1>
-            </div>
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-2 md:mb-0">VA Taekwondo Hub</h1>
             <nav class="mt-4 md:mt-0">
                 <ul class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8 text-lg font-semibold">
                     <li><a href="#schools-section" class="hover:text-red-300 transition-colors duration-300">VA Schools</a></li>
@@ -487,51 +482,7 @@
                 stateFilterSelect.appendChild(option);
             });
         }
-        
-        // --- Image Generation Logic ---
-        async function generateLogo() {
-            const logoImage = document.getElementById('logo-image');
-            const userPrompt = "A modern, bold logo for 'VA Taekwondo Hub' with a red and black color scheme. The logo should feature a dynamic silhouette of a person performing a Taekwondo kick, with a subtle outline of the state of Virginia in the background. The text 'VA Taekwondo Hub' should be integrated seamlessly into the design. No text in the image. Bold, dynamic style.";
 
-            try {
-                // Display a loading indicator while the image is being generated
-                logoImage.src = "https://placehold.co/64x64/000/fff?text=VA";
-                
-                const payload = { 
-                    instances: [{ prompt: userPrompt }], 
-                    parameters: { "sampleCount": 1 } 
-                };
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                
-                if (result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
-                    const base64Data = result.predictions[0].bytesBase64Encoded;
-                    const imageUrl = `data:image/png;base64,${base64Data}`;
-                    logoImage.src = imageUrl;
-                    logoImage.classList.remove('animate-pulse');
-                } else {
-                    console.error("Image generation failed: Unexpected response structure.");
-                    logoImage.src = "https://placehold.co/64x64/f87171/fff?text=Error";
-                }
-
-            } catch (error) {
-                console.error('Error generating logo:', error);
-                logoImage.src = "https://placehold.co/64x64/f87171/fff?text=Error";
-            }
-        }
-        
         // --- Event Listeners ---
 
         // Listen for changes on the county filter dropdown
@@ -548,7 +499,6 @@
             populateFilters();
             renderSchools();
             renderEvents();
-            generateLogo(); // Call the function to generate and display the logo
         });
     </script>
 </body>
